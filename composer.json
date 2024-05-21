@@ -1,0 +1,39 @@
+{
+    "name": "envoylope/amqp-enqueue",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Envoylope\\EnqueueAmqp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Envoylope\\EnqueueAmqp\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "asmblah/php-amqp-compat": "^0.4",
+        "asmblah/php-code-shift": "^0.1",
+        "nytris/nytris": "^0.1"
+    },
+    "require-dev": {
+        "enqueue/amqp-ext": "^0.10",
+        "enqueue/enqueue": "^0.10",
+        "mockery/mockery": "1.6.11",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpstan/phpstan-symfony": "^1.3",
+        "phpunit/phpunit": "^10.2",
+        "symfony/framework-bundle": "^5.0",
+        "symfony/http-kernel": "^5.0",
+        "symfony/monolog-bundle": "^3.8"
+    },
+    "config": {
+        "platform": {
+            "php": "8.1"
+        },
+        "sort-packages": true
+    }
+}
