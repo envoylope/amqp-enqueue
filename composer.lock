@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "asmblah/php-amqp-compat",
-            "version": "v0.4.10",
+            "version": "v0.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asmblah/php-amqp-compat.git",
-                "reference": "2661d411f060e37b755563b7b32b2569bfd0cb0b"
+                "reference": "f86e19464cf0e205fb382bfb3f32b05cfbf7e99f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asmblah/php-amqp-compat/zipball/2661d411f060e37b755563b7b32b2569bfd0cb0b",
-                "reference": "2661d411f060e37b755563b7b32b2569bfd0cb0b",
+                "url": "https://api.github.com/repos/asmblah/php-amqp-compat/zipball/f86e19464cf0e205fb382bfb3f32b05cfbf7e99f",
+                "reference": "f86e19464cf0e205fb382bfb3f32b05cfbf7e99f",
                 "shasum": ""
             },
             "require": {
@@ -55,9 +55,9 @@
             ],
             "support": {
                 "issues": "https://github.com/asmblah/php-amqp-compat/issues",
-                "source": "https://github.com/asmblah/php-amqp-compat/tree/v0.4.10"
+                "source": "https://github.com/asmblah/php-amqp-compat/tree/v0.4.11"
             },
-            "time": "2024-05-29T19:39:19+00:00"
+            "time": "2024-05-29T22:06:31+00:00"
         },
         {
             "name": "asmblah/php-code-shift",
