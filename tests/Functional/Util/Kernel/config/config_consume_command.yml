@@ -1,0 +1,18 @@
+framework:
+    test: true
+
+enqueue:
+    default:
+        transport: 'amqp:'
+        client: ~
+
+services:
+    Envoylope\EnqueueAmqp\Tests\Functional\Util\Enqueue\FakeSignalExtension:
+        public: true
+        tags:
+            - { name: 'enqueue.consumption.extension' }
+
+    Envoylope\EnqueueAmqp\Tests\Functional\Util\Enqueue\MyProcessor:
+        public: true
+        tags:
+            - { name: 'enqueue.topic_subscriber' }

@@ -66,7 +66,9 @@ class AmqpSubscriptionConsumerTest extends AbstractTestCase
         ]);
         $this->envelopeTransformer = mock(EnvelopeTransformerInterface::class);
         $this->exceptionHandler = mock(ExceptionHandlerInterface::class);
-        $this->logger = mock(LoggerInterface::class);
+        $this->logger = mock(LoggerInterface::class, [
+            'debug' => null,
+        ]);
         $this->amqpChannel = mock(AMQPChannel::class, [
             'getConnection' => $this->amqpConnection
         ]);
@@ -75,6 +77,8 @@ class AmqpSubscriptionConsumerTest extends AbstractTestCase
             'getEnvelopeTransformer' => $this->envelopeTransformer,
             'getExceptionHandler' => $this->exceptionHandler,
             'getLogger' => $this->logger,
+            'getReadTimeout' => 12,
+            'getSubscribedConsumers' => [],
             'setConsumptionCallback' => null,
             'subscribeConsumer' => null,
         ]);
