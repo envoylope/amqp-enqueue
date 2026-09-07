@@ -17,18 +17,15 @@ use AMQPChannel;
 use AMQPConnection;
 use Asmblah\PhpAmqpCompat\Bridge\AmqpBridge;
 use Asmblah\PhpAmqpCompat\Bridge\Channel\AmqpChannelBridgeInterface;
-use Asmblah\PhpAmqpCompat\Bridge\Channel\EnvelopeTransformerInterface;
-use Asmblah\PhpAmqpCompat\Driver\Common\Exception\ExceptionHandlerInterface;
+use Asmblah\PhpAmqpCompat\Driver\Common\Channel\ChannelInterface;
+use Asmblah\PhpAmqpCompat\Driver\Common\Logger\LoggerInterface;
 use Asmblah\PhpAmqpCompat\Exception\StopConsumptionException;
-use Asmblah\PhpAmqpCompat\Logger\LoggerInterface;
 use Enqueue\AmqpExt\AmqpConsumer;
 use Enqueue\AmqpExt\AmqpContext;
 use Enqueue\AmqpExt\AmqpSubscriptionConsumer;
 use Envoylope\EnqueueAmqp\Tests\AbstractTestCase;
 use Interop\Queue\Queue as InteropQueueInterface;
 use Mockery\MockInterface;
-use PhpAmqpLib\Channel\AMQPChannel as AmqplibChannel;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 /**
  * Class AmqpSubscriptionConsumerTest.
@@ -37,12 +34,9 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
  */
 class AmqpSubscriptionConsumerTest extends AbstractTestCase
 {
-    private MockInterface&AMQPStreamConnection $amqplibConnection;
     private MockInterface&AMQPConnection $amqpConnection;
-    private MockInterface&AmqplibChannel $amqplibChannel;
+    private MockInterface&ChannelInterface $channel;
     private AmqpSubscriptionConsumer $consumer;
-    private MockInterface&EnvelopeTransformerInterface $envelopeTransformer;
-    private MockInterface&ExceptionHandlerInterface $exceptionHandler;
     private MockInterface&LoggerInterface $logger;
     private MockInterface&AMQPChannel $amqpChannel;
     private MockInterface&AmqpChannelBridgeInterface $channelBridge;
@@ -52,20 +46,13 @@ class AmqpSubscriptionConsumerTest extends AbstractTestCase
 
     public function setUp(): void
     {
-        $this->amqplibConnection = mock(AMQPStreamConnection::class, [
-            'isConnected' => true,
-        ]);
         $this->amqpConnection = mock(AMQPConnection::class, [
             'getReadTimeout' => 10,
             'setReadTimeout' => true,
         ]);
-        $this->amqplibChannel = mock(AmqplibChannel::class, [
-            'basic_consume' => 'my.consumer.tag', // ???
-            'getConnection' => $this->amqplibConnection,
-            'is_open' => true,
+        $this->channel = mock(ChannelInterface::class, [
+            'basicConsume' => 'my-consumer-tag',
         ]);
-        $this->envelopeTransformer = mock(EnvelopeTransformerInterface::class);
-        $this->exceptionHandler = mock(ExceptionHandlerInterface::class);
         $this->logger = mock(LoggerInterface::class, [
             'debug' => null,
         ]);
@@ -73,9 +60,7 @@ class AmqpSubscriptionConsumerTest extends AbstractTestCase
             'getConnection' => $this->amqpConnection
         ]);
         $this->channelBridge = mock(AmqpChannelBridgeInterface::class, [
-            'getAmqplibChannel' => $this->amqplibChannel,
-            'getEnvelopeTransformer' => $this->envelopeTransformer,
-            'getExceptionHandler' => $this->exceptionHandler,
+            'acquireChannel' => $this->channel,
             'getLogger' => $this->logger,
             'getReadTimeout' => 12,
             'getSubscribedConsumers' => [],
@@ -100,7 +85,7 @@ class AmqpSubscriptionConsumerTest extends AbstractTestCase
 
     public function testConsumerCanStart(): void
     {
-        $this->amqplibChannel->expects('wait')
+        $this->channel->expects('wait')
             ->once()
             ->andThrow(new StopConsumptionException());
 
